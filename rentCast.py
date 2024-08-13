@@ -3,15 +3,20 @@ import json
 import boto3
 from botocore.exceptions import NoCredentialsError
 
+# Create a file titled "keys.txt" in the same folder as this file,
+#   and paste the RentCast API key, AWS access key, and AWS secret access key 
+#   in this order, each with its own line
+
 # Get RentCast API and AWS access keys
-with open("rentcast_api.txt", "r") as f:
+with open("keys.txt", "r") as f:
     rentcast_api = f.readline().strip()
-
-with open("access_key.txt", "r") as f:
     access_key = f.readline().strip()
-
-with open("secret_access_key.txt", "r") as f:
     secret_access_key = f.readline().strip()
+
+# Use your S3 bucket name and the target file name
+bucket_name = 'real-estate-data-crunchybucket'
+s3_file_name = 'rentcast_data.json'
+
 
 # Your RentCast API endpoint and parameters
 rentcast_url = "https://api.rentcast.io/v1/markets?zipCode=29611&historyRange=6"
@@ -33,6 +38,7 @@ if response.status_code == 200:
 else:
     print(f"Failed to retrieve data: {response.status_code}")
 
+
 # Initialize the S3 client
 s3 = boto3.client(
     's3',
@@ -41,9 +47,6 @@ s3 = boto3.client(
     region_name = 'us-east-2'
 )
 
-# Your S3 bucket name and the target file name
-bucket_name = 'real-estate-data-crunchybucket'
-s3_file_name = 'rentcast_data.json'
 
 try:
     # Upload the file
@@ -53,4 +56,3 @@ except FileNotFoundError:
     print("The file was not found")
 except NoCredentialsError:
     print("Credentials not available")
-
