@@ -7,7 +7,7 @@ from botocore.exceptions import NoCredentialsError, ClientError
 s3 = boto3.client('s3')
 
 # Define the S3 bucket name and the JSON file name
-bucket_name = 'real-estate-data-bucket'
+bucket_name = 'rentcastbucket'
 s3_file_name = 'rentcast_data.json'
 
 # Function to load data from S3
@@ -34,11 +34,11 @@ data = load_data_from_s3()
 # Display the data if available
 if data:
     st.write("### Rental Market Statistics")
-    st.write(f"Median Rent: ${data['medianRent']:,.2f}")
-    st.write(f"Average Rent: ${data['averageRent']:,.2f}")
-    st.write("### Market Listing Trends")
-    st.write(f"Number of Listings: {data['numListings']}")
-    st.write(f"Average Price per Square Foot: ${data['pricePerSqft']:,.2f}")
+    # st.write(f"Median Rent: ${data['medianRent']:,.2f}")
+    # st.write(f"Average Rent: ${data['averageRent']:,.2f}")
+    # st.write("### Market Listing Trends")
+    # st.write(f"Number of Listings: {data['numListings']}")
+    # st.write(f"Average Price per Square Foot: ${data['pricePerSqft']:,.2f}")
     
     # Display raw JSON data
     st.write("### Raw Data")

@@ -14,7 +14,7 @@ with open("keys.txt", "r") as f:
     secret_access_key = f.readline().strip()
 
 # Use your S3 bucket name and the target file name
-bucket_name = 'real-estate-data-crunchybucket'
+bucket_name = 'rentcastbucket'
 s3_file_name = 'rentcast_data.json'
 
 
