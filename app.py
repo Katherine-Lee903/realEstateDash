@@ -1,28 +1,47 @@
 import streamlit as st
 import boto3
-import requests
 import json
+from botocore.exceptions import NoCredentialsError, ClientError
 
-# Set up S3 client
+# Initialize the S3 client
 s3 = boto3.client('s3')
+
+# Define the S3 bucket name and the JSON file name
 bucket_name = 'real-estate-data-bucket'
+s3_file_name = 'rentcast_data.json'
 
-def load_data():
-    # Fetch the latest file from S3
-    objects = s3.list_objects_v2(Bucket=bucket_name)['Contents']
-    latest_file = sorted(objects, key=lambda x: x['LastModified'], reverse=True)[0]
-    file_name = latest_file['Key']
-    response = s3.get_object(Bucket=bucket_name, Key=file_name)
-    return json.load(response['Body'])
+# Function to load data from S3
+def load_data_from_s3():
+    try:
+        # Fetch the JSON file from S3
+        response = s3.get_object(Bucket=bucket_name, Key=s3_file_name)
+        content = response['Body'].read().decode('utf-8')
+        rentcast_data = json.loads(content)
+        return rentcast_data
+    except NoCredentialsError:
+        st.error("AWS credentials not available.")
+        return None
+    except ClientError as e:
+        st.error(f"Failed to load data from S3: {e}")
+        return None
 
-st.title('Real Estate Investment Dashboard')
-st.write("This dashboard provides insights into real estate rental markets.")
+# Streamlit UI
+st.title("Real Estate Investment Dashboard")
 
-# Load data
-data = load_data()
-st.json(data)  # Display the data as JSON
+# Load the data from S3
+data = load_data_from_s3()
 
-# Visualization (basic example)
-st.write("### Rental Market Statistics")
-st.write(f"Median Rent: {data['medianRent']}")
-st.write(f"Average Rent: {data['averageRent']}")
+# Display the data if available
+if data:
+    st.write("### Rental Market Statistics")
+    st.write(f"Median Rent: ${data['medianRent']:,.2f}")
+    st.write(f"Average Rent: ${data['averageRent']:,.2f}")
+    st.write("### Market Listing Trends")
+    st.write(f"Number of Listings: {data['numListings']}")
+    st.write(f"Average Price per Square Foot: ${data['pricePerSqft']:,.2f}")
+    
+    # Display raw JSON data
+    st.write("### Raw Data")
+    st.json(data)
+else:
+    st.warning("No data available. Please try again later.")
