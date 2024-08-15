@@ -1,0 +1,15 @@
+version: 1
+applications:
+  - appRoot: /
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - pip install streamlit boto3 requests
+        build:
+          commands:
+            - streamlit run app.py
+      artifacts:
+        baseDirectory: /
+        files:
+          - '**/*'
