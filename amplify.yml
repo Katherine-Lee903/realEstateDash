@@ -5,7 +5,7 @@ applications:
       phases:
         preBuild:
           commands:
-            - pip install streamlit boto3 requests botocore json
+            - pip install streamlit boto3 requests botocore
         build:
           commands:
             - streamlit run app.py
