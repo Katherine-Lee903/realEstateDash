@@ -5,17 +5,19 @@ applications:
       phases:
         preBuild:
           commands:
-            - pip install streamlit boto3 requests botocore
+            - pip install streamlit boto3 requests
         build:
           commands:
-            - streamlit run app.py
+            - streamlit run app.py --server.enableCORS false --server.port 8080
       artifacts:
-        baseDirectory: '.'
+        baseDirectory: .
         files:
           - '**/*'
-    cache:
-      paths:
-        - .venv/**/*
-        - .streamlit/**
-        - .cache/**/*
-
+    backend:
+      phases:
+        preBuild:
+          commands:
+            - echo "No backend phases required for Streamlit app"
+        build:
+          commands:
+            - echo "No backend build required"
