@@ -3,6 +3,9 @@ applications:
   - appRoot: .
     frontend:
       phases:
+        preBuild:
+          commands:
+            - pip install streamlit boto3 requests botocore json
         build:
           commands:
             - streamlit run app.py
