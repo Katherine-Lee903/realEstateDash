@@ -5,10 +5,10 @@ applications:
       phases:
         preBuild:
           commands:
-            - pip install streamlit boto3 requests
+            - pip install streamlit boto3 requests botocore
         build:
           commands:
-            - streamlit run app.py --server.enableCORS false --server.port 8080
+            - streamlit run app.py --server.enableCORS false --server.port 8501
       artifacts:
         baseDirectory: .
         files:
