@@ -11,7 +11,7 @@ applications:
           commands:
             - streamlit run app.py
       artifacts:
-        baseDirectory: .
+        baseDirectory: '.'
         files:
           - '**/*'
     cache:
