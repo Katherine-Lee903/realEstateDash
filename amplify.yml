@@ -3,10 +3,6 @@ applications:
   - appRoot: .
     frontend:
       phases:
-        preBuild:
-          commands:
-            - python -m pip install --upgrade pip
-            - pip install streamlit boto3 requests
         build:
           commands:
             - streamlit run app.py
